@@ -1,0 +1,123 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 301.3;
+
+boundaryField
+{
+    left
+    {
+        type            externalWallHeatFluxTemperature;
+
+        mode            coefficient;
+
+        Ta              uniform 301.3;
+        h               uniform 50;
+        kappaMethod     fluidThermo;
+        value           $internalField;
+    }
+    right
+    {
+        type            externalWallHeatFluxTemperature;
+
+        mode            coefficient;
+
+        Ta              uniform 301.3;
+        h               uniform 50;
+        kappaMethod     fluidThermo;
+        value           $internalField;
+    }
+
+    bottom
+    {
+        type            externalWallHeatFluxTemperature;
+
+        mode            coefficient;
+
+        Ta              uniform 301.3;
+        h               uniform 50;
+        kappaMethod     fluidThermo;
+        value           $internalField;
+    }
+    top
+    {
+        
+        type            laserConvection;
+        value           uniform 300;
+
+        HTCheating      20;
+        HTCquenching    20;
+
+        TfH             1928;
+        TfQ             1878;
+
+        heatingTime     14;
+
+        source1
+        {
+            power       120;
+            spotCenter  (0 0 0);
+            normal      (0 0 1);  //- Not used
+
+            sigmaX      0.00005;
+            sigmaY      0.00005;
+
+            correlation 0;
+
+            motion
+            {
+                mode    off;
+                //center  (0 0 0);
+                //omega   6;
+                //nCycles 1;
+                //active  true;
+
+                //start   0.3;
+
+                //mode linear;
+                //points
+                //{
+                //  p0  (0 0 0);
+                //  p1  (0 1 0);
+                //  p2  (1 2 0);
+                //}
+                //linearVelocity 0.4;
+            }
+        }
+
+        
+        powerReduceName   none;
+        kName             k;
+
+        kValue          7;
+    }
+            
+    frontAndBack
+    {
+        type            externalWallHeatFluxTemperature;
+
+        mode            coefficient;
+
+        Ta              uniform 301.3;
+        h               uniform 50;
+        kappaMethod     fluidThermo;
+        value           $internalField;
+    }
+}
+
+// ************************************************************************* //
